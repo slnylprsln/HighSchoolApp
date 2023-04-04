@@ -1,19 +1,20 @@
-﻿
-namespace HighSchoolApp
+﻿namespace HighSchoolApp.Entities
 {
     public class Homework
     {
+        public int? StudentId { get; set; }
+        public int? TeacherId { get; set; }
         public DateTime? SubmissionDate { get; set; }
         public string? Lesson { get; set; }
         public string? HomeworkTitle { get; set; }
-        public int? TeacherId { get; set; }
 
-        public Homework(string? lesson = null, string? homeworkTitle = null, int? teacherId = null)
+        public Homework(int? studentId = null, int? teacherId = null, string? lesson = null, string? homeworkTitle = null)
         {
+            StudentId = studentId;
+            TeacherId = teacherId;
             SubmissionDate = DateTime.Now;
             Lesson = lesson;
             HomeworkTitle = homeworkTitle;
-            TeacherId = teacherId;
         }
     }
 }

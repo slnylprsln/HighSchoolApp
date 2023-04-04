@@ -1,5 +1,4 @@
-﻿
-namespace HighSchoolApp
+﻿namespace HighSchoolApp.Entities
 {
     public class Classroom
     {
@@ -7,11 +6,11 @@ namespace HighSchoolApp
         public int? TeacherId { get; set; }
         public string? ClassroomName { get; set; }
 
-        public Classroom()
+        public Classroom(int? teacherId = null, string? classroomName = null)
         {
             Students = new List<Student>();
+            TeacherId = teacherId;
+            ClassroomName = classroomName;
         }
-
-        
     }
 }

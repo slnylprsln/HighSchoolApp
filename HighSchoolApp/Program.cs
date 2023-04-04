@@ -1,4 +1,4 @@
-﻿using HighSchoolApp;
+﻿using HighSchoolApp.Entities;
 using HighSchoolApp.Services;
 using HighSchoolApp.Servicesstudent;
 using System;
@@ -10,6 +10,7 @@ namespace HighSchoolApp
         public static List<Classroom> Classrooms = new();
         public static List<Student> Students = new();
         public static List<Teacher> Teachers = new();
+        public static List<Homework> Homeworks = new();
 
         static public void Main(String[] args)
         {

@@ -1,4 +1,5 @@
 ﻿
+using HighSchoolApp.Entities;
 using HighSchoolApp.IServices;
 
 namespace HighSchoolApp.Services
@@ -7,91 +8,58 @@ namespace HighSchoolApp.Services
     {
         public void AddStudent(Student student)
         {
-            if (!Program.Students.Any())
+            Student? foundStudent = Program.Students.Find(s => s.Name == student.Name && s.Surname == student.Surname);
+            if (foundStudent == null)
             {
                 Program.Students.Add(student);
-                Console.WriteLine($"The student {student.NameSurname} is added successfully!");
+                Console.WriteLine($"The student {student.Name} {student.Surname} is added successfully!");
             }
-            else
-            {
-                foreach (var st in Program.Students)
-                {
-                    if (st.NameSurname == student.NameSurname)
-                    {
-                        throw new Exception($"The student {student.NameSurname} already exists!");
-                    }
-                }
-            }
+            else throw new Exception($"The student {student.Name} {student.Surname} already exists!");
         }
 
         public void DeleteStudent(int id)
         {
-            Student? found = null;
-            foreach (var st in Program.Students)
+            Student? foundStudent = Program.Students.Find(s => s.Id == id);
+            if (foundStudent != null)
             {
-                if (st.StudentId == id)
+                Program.Students.Remove(foundStudent);
+                Classroom? foundClassroom = null;
+                foreach (var cl in Program.Classrooms)
                 {
-                    found = st;
-                    break;
+                    Student? exist = cl.Students.Find(s => s.Id == id);
+                    if(exist != null) foundClassroom = cl;
                 }
+                if (foundClassroom != null) foundClassroom.Students.Remove(foundStudent);
+                Console.WriteLine($"The student {foundStudent.Name} {foundStudent.Surname} is deleted successfully!");
             }
-            if (found != null)
-            {
-                Program.Students.Remove(found);
-                Console.WriteLine($"The student {found.NameSurname} is deleted successfully!");
-            }
-            else throw new Exception("This student does not exist!");
+            else throw new Exception($"Student with the ID: {id} does not exist!");
         }
 
         public Student GetStudentById(int id)
         {
-            Student? found = null;
-            foreach (var st in Program.Students)
-            {
-                if (st.StudentId == id)
-                {
-                    found = st;
-                    break;
-                }
-            }
-            if (found != null) return found;
-            else throw new Exception("This student does not exist!");
+            Student? foundStudent = Program.Students.Find(s => s.Id == id);
+            if (foundStudent != null) return foundStudent;
+            else throw new Exception($"Student with the ID: {id} does not exist!");
         }
 
-        public Student GetStudentByNameSurname(string nameSurname)
+        public Student GetStudentByNameSurname(string name, string surname)
         {
-            Student? found = null;
-            foreach (var st in Program.Students)
-            {
-                if (string.Compare(st.NameSurname, nameSurname) == 0)
-                {
-                    found = st;
-                    break;
-                }
-            }
-            if (found != null) return found;
-            else throw new Exception("This student does not exist!");
+            Student? foundStudent = Program.Students.Find(s => s.Name == name && s.Surname == surname);
+            if (foundStudent != null) return foundStudent;
+            else throw new Exception($"Student with the Name Surname: {name} {surname} does not exist!");
         }
 
         public void UpdateStudent(int id, Student updateStudent)
         {
-            Student? found = null;
-            foreach (var st in Program.Students)
+            Student? foundStudent = Program.Students.Find(s => s.Id == id);
+            if (foundStudent != null)
             {
-                if (st.StudentId == id)
-                {
-                    found = st;
-                    break;
-                }
-            }
-            if (found != null)
-            {
-                if (string.IsNullOrEmpty(updateStudent.NameSurname)) found.NameSurname = found.NameSurname;
-                else found.NameSurname = updateStudent.NameSurname;
+                if (string.IsNullOrEmpty(updateStudent.Email)) foundStudent.Email = foundStudent.Email;
+                else foundStudent.Email = updateStudent.Email;
 
-                Console.WriteLine($"The student with the student ID {id} is updated successfully!");
+                Console.WriteLine($"The teacher {foundStudent.Name} {foundStudent.Surname} is updated successfully!");
             }
-            else throw new Exception("This student does not exist!");
+            else throw new Exception($"Student with the ID: {id} does not exist!");
         }
     }
 }
