@@ -7,7 +7,7 @@
         public string? Surname { get; set; }
         public string? Email { get; set; }
 
-        public Person(string? name = null, string? surname = null, string? email = null)
+        public Person(int? id = null, string? name = null, string? surname = null, string? email = null)
         {
             Random r = new Random();
             Id = r.Next(1, 1000000);
