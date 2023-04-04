@@ -8,7 +8,7 @@ namespace HighSchoolApp.Services
     {
         public void AddStudentToClassroom(int studentId, string classroomName)
         {
-            Classroom? foundClassroom = Program.Classrooms.Find(c => c.ClassroomName == classroomName);
+            Classroom? foundClassroom = Program.Classrooms.Find(c => string.Compare(c.ClassroomName, classroomName) == 0);
             if (foundClassroom != null)
             {
                 Student? foundStudent = Program.Students.Find(s => s.Id == studentId);
@@ -29,7 +29,7 @@ namespace HighSchoolApp.Services
 
         public void DeleteStudentFromClassroom(int studentId, string classroomName)
         {
-            Classroom? foundClassroom = Program.Classrooms.Find(c => c.ClassroomName == classroomName);
+            Classroom? foundClassroom = Program.Classrooms.Find(c => string.Compare(c.ClassroomName, classroomName) == 0);
             if (foundClassroom != null)
             {
                 Student? foundStudent = Program.Students.Find(s => s.Id == studentId);
@@ -50,7 +50,7 @@ namespace HighSchoolApp.Services
 
         public List<Student> GetAllStudentsOfClassroom(string classroomName)
         {
-            Classroom? foundClassroom = Program.Classrooms.Find(c => c.ClassroomName == classroomName);
+            Classroom? foundClassroom = Program.Classrooms.Find(c => string.Compare(c.ClassroomName, classroomName) == 0);
             if (foundClassroom != null)
             {
                 if (foundClassroom.Students.Any()) return foundClassroom.Students;
@@ -61,7 +61,7 @@ namespace HighSchoolApp.Services
 
         public Student SearchStudentInClassroom(int studentId, string classroomName)
         {
-            Classroom? foundClassroom = Program.Classrooms.Find(c => c.ClassroomName == classroomName);
+            Classroom? foundClassroom = Program.Classrooms.Find(c => string.Compare(c.ClassroomName, classroomName) == 0);
             if (foundClassroom != null)
             {
                 Student? foundStudent = foundClassroom.Students.Find(s => s.Id == studentId);

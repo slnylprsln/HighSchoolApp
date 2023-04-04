@@ -8,7 +8,7 @@ namespace HighSchoolApp.Services
     {
         public Teacher GetTeacherOfClassroom(string classroomName)
         {
-            Classroom? foundClassroom = Program.Classrooms.Find(c => c.ClassroomName == classroomName);
+            Classroom? foundClassroom = Program.Classrooms.Find(c => string.Compare(c.ClassroomName, classroomName) == 0);
             if (foundClassroom != null)
             {
                 Teacher? foundTeacher = Program.Teachers.Find(t => t.Id == foundClassroom.TeacherId);
@@ -20,7 +20,7 @@ namespace HighSchoolApp.Services
 
         public void SetTeacherForClassroom(int teacherId, string classroomName)
         {
-            Classroom? foundClassroom = Program.Classrooms.Find(c => c.ClassroomName == classroomName);
+            Classroom? foundClassroom = Program.Classrooms.Find(c => string.Compare(c.ClassroomName, classroomName) == 0);
             if (foundClassroom != null)
             {
                 if (foundClassroom.TeacherId == null)

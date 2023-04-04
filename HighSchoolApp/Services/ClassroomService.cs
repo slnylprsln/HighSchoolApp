@@ -7,7 +7,7 @@ namespace HighSchoolApp.Services
     {
         public void AddClassroom(Classroom classroom)
         {
-            Classroom? foundClassroom = Program.Classrooms.Find(c => c.ClassroomName == classroom.ClassroomName);
+            Classroom? foundClassroom = Program.Classrooms.Find(c => string.Compare(c.ClassroomName, classroom.ClassroomName) == 0);
             if (foundClassroom == null)
             {
                 Program.Classrooms.Add(classroom);
@@ -18,7 +18,7 @@ namespace HighSchoolApp.Services
 
         public void DeleteClassroom(string classroomName)
         {
-            Classroom? foundClassroom = Program.Classrooms.Find(c => c.ClassroomName == classroomName);
+            Classroom? foundClassroom = Program.Classrooms.Find(c => string.Compare(c.ClassroomName, classroomName) == 0);
             if (foundClassroom != null)
             {
                 Program.Classrooms.Remove(foundClassroom);

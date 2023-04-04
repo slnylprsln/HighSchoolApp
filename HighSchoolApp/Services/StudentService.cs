@@ -8,7 +8,7 @@ namespace HighSchoolApp.Services
     {
         public void AddStudent(Student student)
         {
-            Student? foundStudent = Program.Students.Find(s => s.Name == student.Name && s.Surname == student.Surname);
+            Student? foundStudent = Program.Students.Find(s => (string.Compare(s.Name, student.Name) == 0) && (string.Compare(s.Surname, student.Surname) == 0));
             if (foundStudent == null)
             {
                 Program.Students.Add(student);
@@ -44,7 +44,7 @@ namespace HighSchoolApp.Services
 
         public Student GetStudentByNameSurname(string name, string surname)
         {
-            Student? foundStudent = Program.Students.Find(s => s.Name == name && s.Surname == surname);
+            Student? foundStudent = Program.Students.Find(s => (string.Compare(s.Name, name) == 0) && (string.Compare(s.Surname, surname) == 0));
             if (foundStudent != null) return foundStudent;
             else throw new Exception($"Student with the Name Surname: {name} {surname} does not exist!");
         }
