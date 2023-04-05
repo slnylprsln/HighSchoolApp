@@ -6,7 +6,7 @@ namespace HighSchoolApp.Services
 {
     public class ClassroomStudentServices : IClassroomStudentServices
     {
-        public void AddStudentToClassroom(int studentId, string classroomName)
+        public void AddStudentToClassroom(int? studentId, string? classroomName)
         {
             Classroom? foundClassroom = Program.Classrooms.Find(c => string.Compare(c.ClassroomName, classroomName) == 0);
             if (foundClassroom != null)
@@ -27,7 +27,7 @@ namespace HighSchoolApp.Services
             else throw new Exception($"Classroom {classroomName} does not exist!");
         }
 
-        public void DeleteStudentFromClassroom(int studentId, string classroomName)
+        public void DeleteStudentFromClassroom(int? studentId, string? classroomName)
         {
             Classroom? foundClassroom = Program.Classrooms.Find(c => string.Compare(c.ClassroomName, classroomName) == 0);
             if (foundClassroom != null)
@@ -59,7 +59,7 @@ namespace HighSchoolApp.Services
             else throw new Exception($"Classroom {classroomName} does not exist!");
         }
 
-        public Student SearchStudentInClassroom(int studentId, string classroomName)
+        public Student SearchStudentInClassroom(int? studentId, string? classroomName)
         {
             Classroom? foundClassroom = Program.Classrooms.Find(c => string.Compare(c.ClassroomName, classroomName) == 0);
             if (foundClassroom != null)

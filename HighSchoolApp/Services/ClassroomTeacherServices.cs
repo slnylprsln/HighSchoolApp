@@ -18,7 +18,7 @@ namespace HighSchoolApp.Services
             else throw new Exception($"Classroom {classroomName} does not exist!");
         }
 
-        public void SetTeacherForClassroom(int teacherId, string classroomName)
+        public void SetTeacherForClassroom(int? teacherId, string? classroomName)
         {
             Classroom? foundClassroom = Program.Classrooms.Find(c => string.Compare(c.ClassroomName, classroomName) == 0);
             if (foundClassroom != null)
