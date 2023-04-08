@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.Metrics;
+using System.Xml.Linq;
 using HighSchoolApp.Entities;
 using HighSchoolApp.Services;
 using HighSchoolApp.Servicesstudent;
@@ -21,6 +22,8 @@ namespace HighSchoolApp
             TeacherService teacherService = new();
             HomeworkService homeworkService = new();
 
+            Console.WriteLine("Welcome to Anatolian High School!");
+            
             bool exit = false;
 
             while (!exit)
@@ -239,26 +242,170 @@ namespace HighSchoolApp
                             {
                                 // Add Student
                                 case 1:
+                                    bool exitStudentAdd = false;
+                                    while (!exitStudentAdd)
+                                    {
+                                        Console.WriteLine("Please enter name of the student (If you want to exit, just enter \"0\"):");
+                                        string? studentNameToAdd = Console.ReadLine();
+                                        int compareToAddStudentName = string.Compare(studentNameToAdd, "0");
+                                        if (compareToAddStudentName == 0) exitStudentAdd = true;
+                                        else
+                                        {
+                                            if (studentNameToAdd != null)
+                                            {
+                                                Console.WriteLine("Please enter surname of the student (If you want to exit, just enter \"0\"):");
+                                                string? studentSurnameToAdd = Console.ReadLine();
+                                                int compareToAddStudentSurname = string.Compare(studentSurnameToAdd, "0");
+                                                if (compareToAddStudentSurname == 0) exitStudentAdd = true;
+                                                else
+                                                {
+                                                    if (studentSurnameToAdd != null)
+                                                    {
+                                                        Console.WriteLine("Please enter email of the student (If you want to exit, just enter \"0\"):");
+                                                        string? studentEmailToAdd = Console.ReadLine();
+                                                        int compareToAddStudentEmail = string.Compare(studentEmailToAdd, "0");
+                                                        if (compareToAddStudentEmail == 0) exitStudentAdd = true;
+                                                        else
+                                                        {
+                                                            if (studentEmailToAdd != null)
+                                                            {
+                                                                Student toAdd = new()
+                                                                {
+                                                                    Name = studentNameToAdd,
+                                                                    Surname = studentSurnameToAdd,
+                                                                    Email = studentEmailToAdd
+                                                                };
+                                                                studentService.AddStudent(toAdd);
+                                                                exitStudentAdd = true;
+                                                            }
+                                                            else Console.WriteLine("You entered null value, please try again!");
+                                                        }
+                                                    }
+                                                    else Console.WriteLine("You entered null value, please try again!");
+                                                }
+                                            }
+                                            else Console.WriteLine("You entered null value, please try again!");
+                                        }
+                                    }
                                     break;
 
                                 // Get Student by Name Surname
                                 case 2:
+                                    bool exitSearchStudent = false;
+                                    while (!exitSearchStudent)
+                                    {
+                                        Console.WriteLine("Please enter name and surname of the student that you want to search (If you want to exit, just enter \"0\"):");
+                                        string? nameSurname = Console.ReadLine();
+                                        int compareNameSurname = string.Compare(nameSurname, "0");
+                                        if (compareNameSurname == 0) exitSearchStudent = true;
+                                        else 
+                                        {
+                                            if (nameSurname != null) 
+                                            {
+                                                string[] both = nameSurname.Split(' ');
+                                                string name = both[0];
+                                                string surname = both[1];
+                                                Student foundStudent = studentService.GetStudentByNameSurname(name, surname);
+                                                if (foundStudent != null) 
+                                                {
+                                                    Console.WriteLine($"Student {name} {surname} exists! The student's ID is {foundStudent.Id} and email is {foundStudent.Email}.");
+                                                }
+                                                exitSearchStudent = true;
+                                            } 
+                                            else Console.WriteLine("You entered null value, please try again!");
+                                        }
+                                    }
                                     break;
 
                                 // Get Student by ID
                                 case 3:
+                                    bool exitSearchID = false;
+                                    while (!exitSearchID)
+                                    {
+                                        Console.WriteLine("Please enter ID of the student that you want to search (If you want to exit, just enter \"0\"):");
+                                        int? Id = Convert.ToInt32(Console.ReadLine());
+                                        if (Id == 0) exitSearchID = true;
+                                        else
+                                        {
+                                            if (Id != null)
+                                            {
+                                                Student foundStudent = studentService.GetStudentById(Id);
+                                                Console.WriteLine($"Student with the ID: {Id} exists! The student's name surname is {foundStudent.Name} {foundStudent.Surname} and email is {foundStudent.Email}.");
+                                                exitSearchID = true;
+                                            }
+                                            else Console.WriteLine("You entered null value, please try again!");
+                                        }
+                                    }
                                     break;
 
                                 // Update Student
                                 case 4:
+                                    bool exitUpdateID = false;
+                                    while (!exitUpdateID)
+                                    {
+                                        Console.WriteLine("Please enter ID of the student that you want to update (If you want to exit, just enter \"0\"):");
+                                        int? Id = Convert.ToInt32(Console.ReadLine());
+                                        if (Id == 0) exitUpdateID = true;
+                                        else
+                                        {
+                                            if (Id != null)
+                                            {
+                                                Console.WriteLine("Please enter a new email to update student (If you want to exit, just enter \"0\"):");
+                                                string? newEmail = Console.ReadLine();
+                                                int compareEmail = string.Compare(newEmail, "0");
+                                                if (compareEmail == 0) exitUpdateID = true;
+                                                else
+                                                {
+                                                    if (newEmail != null)
+                                                    {
+                                                        Student updatedStudent = new()
+                                                        {
+                                                            Name = null,
+                                                            Surname = null,
+                                                            Email = newEmail
+                                                        };
+                                                        studentService.UpdateStudent(Id, updatedStudent);
+                                                        exitUpdateID = true;
+                                                    }
+                                                    else Console.WriteLine("You entered null value, please try again!");
+                                                }
+                                            }
+                                            else Console.WriteLine("You entered null value, please try again!");
+                                        }
+                                    }
                                     break;
 
                                 // Delete Student
                                 case 5:
+                                    bool exitDeleteID = false;
+                                    while (!exitDeleteID)
+                                    {
+                                        Console.WriteLine("Please enter ID of the student that you want to delete (If you want to exit, just enter \"0\"):");
+                                        int? Id = Convert.ToInt32(Console.ReadLine());
+                                        if (Id == 0) exitDeleteID = true;
+                                        else
+                                        {
+                                            if (Id != null)
+                                            {
+                                                studentService.DeleteStudent(Id);
+                                                exitDeleteID = true;
+                                            }
+                                            else Console.WriteLine("You entered null value, please try again!");
+                                        }
+                                    }
+                                    break;
+
+                                // Get All Students
+                                case 6:
+                                    List<Student> allStudents = studentService.GetAllStudents();
+                                    foreach (var t in allStudents)
+                                    {
+                                        Console.WriteLine($"Student ID: {t.Id}\nName Surname: {t.Name} {t.Surname}\nEmail: {t.Email}");
+                                    }
                                     break;
 
                                 // --> Get Back to Main Page <--
-                                case 6:
+                                case 7:
                                     studentExit = true;
                                     break;
                             }
@@ -278,26 +425,170 @@ namespace HighSchoolApp
                             {
                                 // Add Teacher
                                 case 1:
+                                    bool exitTeacherAdd = false;
+                                    while (!exitTeacherAdd)
+                                    {
+                                        Console.WriteLine("Please enter name of the teacher (If you want to exit, just enter \"0\"):");
+                                        string? teacherNameToAdd = Console.ReadLine();
+                                        int compareToAddTeacherName = string.Compare(teacherNameToAdd, "0");
+                                        if (compareToAddTeacherName == 0) exitTeacherAdd = true;
+                                        else
+                                        {
+                                            if (teacherNameToAdd != null)
+                                            {
+                                                Console.WriteLine("Please enter surname of the teacher (If you want to exit, just enter \"0\"):");
+                                                string? teacherSurnameToAdd = Console.ReadLine();
+                                                int compareToAddTeacherSurname = string.Compare(teacherSurnameToAdd, "0");
+                                                if (compareToAddTeacherSurname == 0) exitTeacherAdd = true;
+                                                else
+                                                {
+                                                    if (teacherSurnameToAdd != null)
+                                                    {
+                                                        Console.WriteLine("Please enter email of the teacher (If you want to exit, just enter \"0\"):");
+                                                        string? teacherEmailToAdd = Console.ReadLine();
+                                                        int compareToAddTeacherEmail = string.Compare(teacherEmailToAdd, "0");
+                                                        if (compareToAddTeacherEmail == 0) exitTeacherAdd = true;
+                                                        else
+                                                        {
+                                                            if (teacherEmailToAdd != null)
+                                                            {
+                                                                Teacher toAdd = new()
+                                                                {
+                                                                    Name = teacherNameToAdd,
+                                                                    Surname = teacherSurnameToAdd,
+                                                                    Email = teacherEmailToAdd
+                                                                };
+                                                                teacherService.AddTeacher(toAdd);
+                                                                exitTeacherAdd = true;
+                                                            }
+                                                            else Console.WriteLine("You entered null value, please try again!");
+                                                        }
+                                                    }
+                                                    else Console.WriteLine("You entered null value, please try again!");
+                                                }
+                                            }
+                                            else Console.WriteLine("You entered null value, please try again!");
+                                        }
+                                    }
                                     break;
 
                                 // Get Teacher by Name Surname
                                 case 2:
+                                    bool exitSearchTeacher = false;
+                                    while (!exitSearchTeacher)
+                                    {
+                                        Console.WriteLine("Please enter name and surname of the teacher that you want to search (If you want to exit, just enter \"0\"):");
+                                        string? nameSurname = Console.ReadLine();
+                                        int compareNameSurname = string.Compare(nameSurname, "0");
+                                        if (compareNameSurname == 0) exitSearchTeacher = true;
+                                        else
+                                        {
+                                            if (nameSurname != null)
+                                            {
+                                                string[] both = nameSurname.Split(' ');
+                                                string name = both[0];
+                                                string surname = both[1];
+                                                Teacher foundTeacher = teacherService.GetTeacherByNameSurname(name, surname);
+                                                if (foundTeacher != null)
+                                                {
+                                                    Console.WriteLine($"Teacher {name} {surname} exists! The teacher's ID is {foundTeacher.Id} and email is {foundTeacher.Email}.");
+                                                }
+                                                exitSearchTeacher = true;
+                                            }
+                                            else Console.WriteLine("You entered null value, please try again!");
+                                        }
+                                    }
                                     break;
 
                                 // Get Teacher by ID
                                 case 3:
+                                    bool exitSearchID = false;
+                                    while (!exitSearchID)
+                                    {
+                                        Console.WriteLine("Please enter ID of the teacher that you want to search (If you want to exit, just enter \"0\"):");
+                                        int? Id = Convert.ToInt32(Console.ReadLine());
+                                        if (Id == 0) exitSearchID = true;
+                                        else
+                                        {
+                                            if (Id != null)
+                                            {
+                                                Teacher foundTeacher = teacherService.GetTeacherById(Id);
+                                                Console.WriteLine($"Teacher with the ID: {Id} exists! The teacher's name surname is {foundTeacher.Name} {foundTeacher.Surname} and email is {foundTeacher.Email}.");
+                                                exitSearchID = true;
+                                            }
+                                            else Console.WriteLine("You entered null value, please try again!");
+                                        }
+                                    }
                                     break;
 
                                 // Update Teacher
                                 case 4:
+                                    bool exitUpdateID = false;
+                                    while (!exitUpdateID)
+                                    {
+                                        Console.WriteLine("Please enter ID of the teacher that you want to update (If you want to exit, just enter \"0\"):");
+                                        int? Id = Convert.ToInt32(Console.ReadLine());
+                                        if (Id == 0) exitUpdateID = true;
+                                        else
+                                        {
+                                            if (Id != null)
+                                            {
+                                                Console.WriteLine("Please enter a new email to update teacher (If you want to exit, just enter \"0\"):");
+                                                string? newEmail = Console.ReadLine();
+                                                int compareEmail = string.Compare(newEmail, "0");
+                                                if (compareEmail == 0) exitUpdateID = true;
+                                                else
+                                                {
+                                                    if (newEmail != null)
+                                                    {
+                                                        Teacher updatedTeacher = new()
+                                                        {
+                                                            Name = null,
+                                                            Surname = null,
+                                                            Email = newEmail
+                                                        };
+                                                        teacherService.UpdateTeacher(Id, updatedTeacher);
+                                                        exitUpdateID = true;
+                                                    }
+                                                    else Console.WriteLine("You entered null value, please try again!");
+                                                }
+                                            }
+                                            else Console.WriteLine("You entered null value, please try again!");
+                                        }
+                                    }
                                     break;
 
                                 // Delete Teacher
                                 case 5:
+                                    bool exitDeleteID = false;
+                                    while (!exitDeleteID)
+                                    {
+                                        Console.WriteLine("Please enter ID of the teacher that you want to delete (If you want to exit, just enter \"0\"):");
+                                        int? Id = Convert.ToInt32(Console.ReadLine());
+                                        if (Id == 0) exitDeleteID = true;
+                                        else
+                                        {
+                                            if (Id != null)
+                                            {
+                                                teacherService.DeleteTeacher(Id);
+                                                exitDeleteID = true;
+                                            }
+                                            else Console.WriteLine("You entered null value, please try again!");
+                                        }
+                                    }
+                                    break;
+
+                                // Get All Teachers
+                                case 6:
+                                    List<Teacher> allTeachers = teacherService.GetAllTeachers();
+                                    foreach (var t in allTeachers)
+                                    {
+                                        Console.WriteLine($"Teacher ID: {t.Id}\nName Surname: {t.Name} {t.Surname}\nEmail: {t.Email}");
+                                    }
                                     break;
 
                                 // --> Get Back to Main Page <--
-                                case 6:
+                                case 7:
                                     teacherExit = true;
                                     break;
                             }
@@ -317,14 +608,44 @@ namespace HighSchoolApp
                             {
                                 // Send Homework
                                 case 1:
+                                    Console.WriteLine("Please enter the student ID who prepared the homework:");
+                                    int studentId = Convert.ToInt32(Console.ReadLine());
+                                    Console.WriteLine("Please enter the teacher ID to send homework to:");
+                                    int teacherId = Convert.ToInt32(Console.ReadLine());
+                                    Console.WriteLine("Please enter name of the lesson:");
+                                    string lesson = Console.ReadLine();
+                                    Console.WriteLine("Please enter title of the homework:");
+                                    string homeworkTitle = Console.ReadLine();
+                                    Homework hw = new()
+                                    {
+                                        StudentId = studentId,
+                                        TeacherId = teacherId,
+                                        Lesson = lesson,
+                                        HomeworkTitle = homeworkTitle
+                                    };
+                                    homeworkService.SendHomework(hw);
                                     break;
 
                                 // Get All Homeworks Submitted by a Student
                                 case 2:
+                                    Console.WriteLine("Please enter student ID that you want to see homeworks of:");
+                                    int studentHomeworkId = Convert.ToInt32(Console.ReadLine());
+                                    List<Homework> homeworksStudent = homeworkService.GetAllHomeworksSubmittedByAStudent(studentHomeworkId);
+                                    foreach (var h in homeworksStudent)
+                                    {
+                                        Console.WriteLine($"Teacher ID: {h.TeacherId}\nSubmission Date: {h.SubmissionDate}\nLesson: {h.Lesson}\nHomework Title: {h.HomeworkTitle}");
+                                    }
                                     break;
 
                                 // Get All Homeworks Submitted to a Teacher
                                 case 3:
+                                    Console.WriteLine("Please enter teacher ID to see all homeworks sent to that teacher:");
+                                    int teacherHomeworkId = Convert.ToInt32(Console.ReadLine());
+                                    List<Homework> homeworksTeacher = homeworkService.GetAllHomeworksSubmittedToATeacher(teacherHomeworkId);
+                                    foreach (var h in homeworksTeacher)
+                                    {
+                                        Console.WriteLine($"Student ID: {h.StudentId}\nSubmission Date: {h.SubmissionDate}\nLesson: {h.Lesson}\nHomework Title: {h.HomeworkTitle}");
+                                    }
                                     break;
 
                                 // Get All Homeworks in the System
@@ -351,7 +672,6 @@ namespace HighSchoolApp
 
         public static void ShowMainPage()
         {
-            Console.WriteLine("Welcome to Anatolian High School!");
             Console.WriteLine("Here are the group of operation options can be performed, please pick one:");
             Console.WriteLine("1) Classroom");
             Console.WriteLine("2) Student");
@@ -382,7 +702,8 @@ namespace HighSchoolApp
             Console.WriteLine($"3) Get {human} by {human} ID");
             Console.WriteLine($"4) Update {human}");
             Console.WriteLine($"5) Delete {human}");
-            Console.WriteLine("6) --> Get Back to Main Page <--");
+            Console.WriteLine($"6) Get All {human}s");
+            Console.WriteLine("7) --> Get Back to Main Page <--");
         }
 
         public static void ShowHomeworkOperations()
@@ -396,5 +717,3 @@ namespace HighSchoolApp
         }
     }
 }
-
-

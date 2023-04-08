@@ -17,7 +17,7 @@ namespace HighSchoolApp.Services
             else throw new Exception($"The student {student.Name} {student.Surname} already exists!");
         }
 
-        public void DeleteStudent(int id)
+        public void DeleteStudent(int? id)
         {
             Student? foundStudent = Program.Students.Find(s => s.Id == id);
             if (foundStudent != null)
@@ -35,7 +35,7 @@ namespace HighSchoolApp.Services
             else throw new Exception($"Student with the ID: {id} does not exist!");
         }
 
-        public Student GetStudentById(int id)
+        public Student GetStudentById(int? id)
         {
             Student? foundStudent = Program.Students.Find(s => s.Id == id);
             if (foundStudent != null) return foundStudent;
@@ -49,7 +49,7 @@ namespace HighSchoolApp.Services
             else throw new Exception($"Student with the Name Surname: {name} {surname} does not exist!");
         }
 
-        public void UpdateStudent(int id, Student updateStudent)
+        public void UpdateStudent(int? id, Student updateStudent)
         {
             Student? foundStudent = Program.Students.Find(s => s.Id == id);
             if (foundStudent != null)
@@ -60,6 +60,11 @@ namespace HighSchoolApp.Services
                 Console.WriteLine($"The teacher {foundStudent.Name} {foundStudent.Surname} is updated successfully!");
             }
             else throw new Exception($"Student with the ID: {id} does not exist!");
+        }
+
+        public List<Student> GetAllStudents()
+        {
+            return Program.Students;
         }
     }
 }
