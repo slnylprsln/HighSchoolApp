@@ -36,8 +36,20 @@ namespace HighSchoolApp.Services
                     Teacher? foundTeacher = Program.Teachers.Find(t => t.Id == teacherId);
                     if (foundTeacher != null)
                     {
-                        foundClassroom.TeacherId = foundTeacher.Id;
-                        Console.WriteLine($"For the classroom {classroomName}, teacher {foundTeacher.Name} {foundTeacher.Surname} is set successfully!");
+                        bool isAvailable = true;
+                        foreach (var c in Program.Classrooms)
+                        {
+                            if (c.TeacherId == teacherId)
+                            {
+                                isAvailable = false;
+                            }
+                        }
+                        if (isAvailable)
+                        {
+                            foundClassroom.TeacherId = foundTeacher.Id;
+                            Console.WriteLine($"For the classroom {classroomName}, teacher {foundTeacher.Name} {foundTeacher.Surname} is set successfully!");
+                        }
+                        else Console.WriteLine($"Teacher with the ID: {teacherId} is not available!");
                     }
                     else Console.WriteLine($"Teacher with the ID: {teacherId} does not exist!");
                 }

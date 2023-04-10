@@ -26,5 +26,18 @@ namespace HighSchoolApp.Services
             }
             else Console.WriteLine($"Classroom {classroomName} does not exist!");
         }
+
+        public List<Classroom>? GetAllClassrooms()
+        {
+            if (Program.Classrooms.Any())
+            {
+                return Program.Classrooms;
+            }
+            else
+            {
+                Console.WriteLine("Student list is empty!");
+                return null;
+            }
+        }
     }
 }

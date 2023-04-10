@@ -6,5 +6,6 @@ namespace HighSchoolApp.IServices
     {
         public void AddClassroom(Classroom classroom);
         public void DeleteClassroom(string classroomName);
+        public List<Classroom>? GetAllClassrooms();
     }
 }

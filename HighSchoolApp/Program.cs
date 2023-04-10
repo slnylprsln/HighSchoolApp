@@ -54,45 +54,50 @@ namespace HighSchoolApp
                                     bool exitDeleting = false;
                                     while (!exitDeleting) exitDeleting = HandleDeleteClassroom();
                                     break;
+                               
+                                // Get All Classrooms
+                                case 3:
+                                    HandleGetAllClassrooms();
+                                    break;
 
                                 // Get All Students of Classroom
-                                case 3:
+                                case 4:
                                     bool exitGetStudentList = false;
                                     while (!exitGetStudentList) exitGetStudentList = HandleGetAllStudentsOfClassroom();
                                     break;
 
                                 // Search Student in Classroom
-                                case 4:
+                                case 5:
                                     bool exitSearchStudent = false;
                                     while (!exitSearchStudent) exitSearchStudent = HandleSearchStudentInClassroom();
                                     break;
 
                                 // Add Student to Classroom
-                                case 5:
+                                case 6:
                                     bool exitAddStudentIntoClassroom = false;
                                     while (!exitAddStudentIntoClassroom) exitAddStudentIntoClassroom = HandleAddStudentToClassroom();
                                     break;
 
                                 // Delete Student from Classroom
-                                case 6:
+                                case 7:
                                     bool exitDeleteStudentFromClassroom = false;
                                     while (!exitDeleteStudentFromClassroom) exitDeleteStudentFromClassroom = HandleDeleteStudentFromClassroom();
                                     break;
 
                                 // Set Teacher for Classroom
-                                case 7:
+                                case 8:
                                     bool exitSetTeacher = false;
                                     while (!exitSetTeacher) exitSetTeacher = HandleSetTeacherForClassroom();
                                     break;
 
                                 // Get Teacher of Classroom
-                                case 8:
+                                case 9:
                                     bool exitGetTeacherOfClassroom = false;
                                     while (!exitGetTeacherOfClassroom) exitGetTeacherOfClassroom = HandleGetTeacherOfClassroom();
                                     break;
 
                                 // --> Get Back to Main Page <--
-                                case 9:
+                                case 10:
                                     classroomExit = true;
                                     break;
                             }
@@ -167,7 +172,7 @@ namespace HighSchoolApp
                                 // Add Teacher
                                 case 1:
                                     bool exitTeacherAdd = false;
-                                    while (!exitTeacherAdd) exitTeacherAdd = HandleAddStudent();
+                                    while (!exitTeacherAdd) exitTeacherAdd = HandleAddTeacher();
                                     break;
 
                                 // Get Teacher by Name Surname
@@ -179,95 +184,24 @@ namespace HighSchoolApp
                                 // Get Teacher by ID
                                 case 3:
                                     bool exitSearchID = false;
-                                    while (!exitSearchID)
-                                    {
-                                        Console.WriteLine("Please enter ID of the teacher that you want to search (If you want to exit, just enter \"0\"):");
-                                        int? Id = Convert.ToInt32(Console.ReadLine());
-                                        if (Id == 0) exitSearchID = true;
-                                        else
-                                        {
-                                            if (Id != null)
-                                            {
-                                                Teacher? foundTeacher = teacherService.GetById(Id);
-                                                if (foundTeacher != null)
-                                                {
-                                                    Console.WriteLine($"Teacher with the ID: {Id} exists! The teacher's name surname is {foundTeacher.Name} {foundTeacher.Surname} and email is {foundTeacher.Email}.");
-                                                }
-                                                exitSearchID = true;
-                                            }
-                                            else Console.WriteLine("You entered null value, please try again!");
-                                        }
-                                    }
+                                    while (!exitSearchID) exitSearchID = HandleGetTeacherById();
                                     break;
 
                                 // Update Teacher
                                 case 4:
                                     bool exitUpdateID = false;
-                                    while (!exitUpdateID)
-                                    {
-                                        Console.WriteLine("Please enter ID of the teacher that you want to update (If you want to exit, just enter \"0\"):");
-                                        int? Id = Convert.ToInt32(Console.ReadLine());
-                                        if (Id == 0) exitUpdateID = true;
-                                        else
-                                        {
-                                            if (Id != null)
-                                            {
-                                                Console.WriteLine("Please enter a new email to update teacher (If you want to exit, just enter \"0\"):");
-                                                string? newEmail = Console.ReadLine();
-                                                int compareEmail = string.Compare(newEmail, "0");
-                                                if (compareEmail == 0) exitUpdateID = true;
-                                                else
-                                                {
-                                                    if (newEmail != null)
-                                                    {
-                                                        Teacher updatedTeacher = new()
-                                                        {
-                                                            Name = null,
-                                                            Surname = null,
-                                                            Email = newEmail
-                                                        };
-                                                        teacherService.Update(Id, updatedTeacher);
-                                                        exitUpdateID = true;
-                                                    }
-                                                    else Console.WriteLine("You entered null value, please try again!");
-                                                }
-                                            }
-                                            else Console.WriteLine("You entered null value, please try again!");
-                                        }
-                                    }
+                                    while (!exitUpdateID) exitUpdateID = HandleUpdateTeacher();
                                     break;
 
                                 // Delete Teacher
                                 case 5:
                                     bool exitDeleteID = false;
-                                    while (!exitDeleteID)
-                                    {
-                                        Console.WriteLine("Please enter ID of the teacher that you want to delete (If you want to exit, just enter \"0\"):");
-                                        int? Id = Convert.ToInt32(Console.ReadLine());
-                                        if (Id == 0) exitDeleteID = true;
-                                        else
-                                        {
-                                            if (Id != null)
-                                            {
-                                                teacherService.Delete(Id);
-                                                exitDeleteID = true;
-                                            }
-                                            else Console.WriteLine("You entered null value, please try again!");
-                                        }
-                                    }
+                                    while (!exitDeleteID) exitDeleteID = HandleDeleteTeacher();
                                     break;
 
                                 // Get All Teachers
                                 case 6:
-                                    List<Teacher>? allTeachers = teacherService.GetAll();
-                                    if (allTeachers != null)
-                                    {
-                                        foreach (var t in allTeachers)
-                                        {
-                                            Console.WriteLine($"Teacher ID: {t.Id}\nName Surname: {t.Name} {t.Surname}\nEmail: {t.Email}");
-                                        }
-                                    }
-                                    Console.WriteLine("--- End of the Teacher List ---");
+                                    HandleGetAllTeachers();
                                     break;
 
                                 // --> Get Back to Main Page <--
@@ -291,98 +225,24 @@ namespace HighSchoolApp
                                 // Send Homework
                                 case 1:
                                     bool exitSendHomework = false;
-                                    while (!exitSendHomework)
-                                    {
-                                        Console.WriteLine("Please enter the student ID who prepared the homework (If you want to exit, just enter \"0\"):");
-                                        int studentId = Convert.ToInt32(Console.ReadLine());
-                                        if (studentId == 0) exitSendHomework = true;
-                                        else
-                                        {
-                                            Console.WriteLine("Please enter the teacher ID to send homework to (If you want to exit, just enter \"0\"):");
-                                            int teacherId = Convert.ToInt32(Console.ReadLine());
-                                            if (teacherId == 0) exitSendHomework = true;
-                                            else
-                                            {
-                                                Console.WriteLine("Please enter name of the lesson (If you want to exit, just enter \"0\"):");
-                                                string? lesson = Console.ReadLine();
-                                                int comparisonLesson = string.Compare(lesson, "0");
-                                                if (comparisonLesson == 0) exitSendHomework = true;
-                                                else
-                                                {
-                                                    Console.WriteLine("Please enter title of the homework (If you want to exit, just enter \"0\"):");
-                                                    string? homeworkTitle = Console.ReadLine();
-                                                    int comparisonTitle = string.Compare(homeworkTitle, "0");
-                                                    if (comparisonTitle == 0) exitSendHomework = true;
-                                                    else
-                                                    {
-                                                        Homework hw = new()
-                                                        {
-                                                            StudentId = studentId,
-                                                            TeacherId = teacherId,
-                                                            Lesson = lesson,
-                                                            HomeworkTitle = homeworkTitle
-                                                        };
-                                                        homeworkService.SendHomework(hw);
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-
+                                    while (!exitSendHomework) exitSendHomework = HandleSendHomework();
                                     break;
 
                                 // Get All Homeworks Submitted by a Student
                                 case 2:
                                     bool exitByStudent = false;
-                                    while (!exitByStudent)
-                                    {
-                                        Console.WriteLine("Please enter student ID that you want to see homeworks of (If you want to exit, just enter \"0\"):");
-                                        int studentHomeworkId = Convert.ToInt32(Console.ReadLine());
-                                        if (studentHomeworkId == 0) exitByStudent = true;
-                                        else
-                                        {
-                                            List<Homework>? homeworksStudent = homeworkService.GetAllHomeworksSubmittedByAStudent(studentHomeworkId);
-                                            if (homeworksStudent != null)
-                                            {
-                                                foreach (var h in homeworksStudent)
-                                                {
-                                                    Console.WriteLine($"Teacher ID: {h.TeacherId}\nSubmission Date: {h.SubmissionDate}\nLesson: {h.Lesson}\nHomework Title: {h.HomeworkTitle}");
-                                                }
-                                            }
-                                        }
-                                    }
+                                    while (!exitByStudent) exitByStudent = HandleGetAllHomeworksSubmittedByAStudent();
                                     break;
 
                                 // Get All Homeworks Submitted to a Teacher
                                 case 3:
                                     bool exitToTeacher = false;
-                                    while (!exitToTeacher)
-                                    {
-                                        Console.WriteLine("Please enter teacher ID to see all homeworks sent to that teacher (If you want to exit, just enter \"0\"):");
-                                        int teacherHomeworkId = Convert.ToInt32(Console.ReadLine());
-                                        if (teacherHomeworkId == 0) exitToTeacher = true;
-                                        else
-                                        {
-                                            List<Homework>? homeworksTeacher = homeworkService.GetAllHomeworksSubmittedToATeacher(teacherHomeworkId);
-                                            if (homeworksTeacher != null)
-                                            {
-                                                foreach (var h in homeworksTeacher)
-                                                {
-                                                    Console.WriteLine($"Student ID: {h.StudentId}\nSubmission Date: {h.SubmissionDate}\nLesson: {h.Lesson}\nHomework Title: {h.HomeworkTitle}");
-                                                }
-                                            }
-                                        }
-                                    }
-
+                                    while (!exitToTeacher) exitToTeacher = HandleGetAllHomeworksSubmittedToATeacher();
                                     break;
 
                                 // Get All Homeworks in the System
                                 case 4:
-                                    List<Homework>? allHomeworks = homeworkService.GetAllHomeworksInTheSystem();
-                                    if (allHomeworks != null)
-                                    {
-                                        allHomeworks.ForEach(h => Console.WriteLine($"Student with the ID: {h.StudentId} sent a homework titled as {h.HomeworkTitle} to the teacher with the ID: {h.TeacherId}. The lesson was {h.Lesson} and submission date for the homework was {h.SubmissionDate}."));
-                                    }
+                                    GetAllHomeworksInTheSystem();
                                     break;
 
                                 // --> Get Back to Main Page <--
@@ -395,6 +255,7 @@ namespace HighSchoolApp
 
                     // --> Exit the System <--
                     case 5:
+                        Console.WriteLine("Goodbye! Have a nice day!");
                         Environment.Exit(0);
                         break;
                 }
@@ -416,13 +277,14 @@ namespace HighSchoolApp
             Console.WriteLine("Here are the group of operation options can be performed on classrooms, please pick one:");
             Console.WriteLine("1) Add Classroom");
             Console.WriteLine("2) Delete Classroom");
-            Console.WriteLine("3) Get All Students of Classroom");
-            Console.WriteLine("4) Search Student in Classroom");
-            Console.WriteLine("5) Add Student to Classroom");
-            Console.WriteLine("6) Delete Student from Classroom");
-            Console.WriteLine("7) Set Teacher for Classroom");
-            Console.WriteLine("8) Get Teacher of Classroom");
-            Console.WriteLine("9) --> Get Back to Main Page <--");
+            Console.WriteLine("3) Get All Classrooms");
+            Console.WriteLine("4) Get All Students of Classroom");
+            Console.WriteLine("5) Search Student in Classroom");
+            Console.WriteLine("6) Add Student to Classroom");
+            Console.WriteLine("7) Delete Student from Classroom");
+            Console.WriteLine("8) Set Teacher for Classroom");
+            Console.WriteLine("9) Get Teacher of Classroom");
+            Console.WriteLine("10) --> Get Back to Main Page <--");
         }
 
         public static void ShowHumanOperations(string human)
@@ -447,6 +309,7 @@ namespace HighSchoolApp
             Console.WriteLine("5) --> Get Back to Main Page <--");
         }
 
+        /* CLASSROOM OPERATIONS */
         public static bool HandleAddClassroom()
         {
             Console.WriteLine("Please enter a name for classroom (If you want to exit, just enter \"0\"):");
@@ -498,6 +361,19 @@ namespace HighSchoolApp
                     return false;
                 }
             }
+        }
+
+        public static void HandleGetAllClassrooms()
+        {
+            List<Classroom>? allClassrooms = classroomService.GetAllClassrooms();
+            if (allClassrooms != null)
+            {
+                foreach (var t in allClassrooms)
+                {
+                    Console.WriteLine($"Classroom Name: {t.ClassroomName}\nStudent Count: {t.Students.Count}\nTeacher ID: {t.TeacherId}");
+                }
+            }
+            Console.WriteLine("--- End of the Classroom List ---");
         }
 
         public static bool HandleGetAllStudentsOfClassroom()
@@ -627,7 +503,11 @@ namespace HighSchoolApp
             {
                 if (classroomNameToGetTeacher != null)
                 {
-                    classroomTeacherServices.GetTeacherOfClassroom(classroomNameToGetTeacher);
+                    Teacher? foundTeacher = classroomTeacherServices.GetTeacherOfClassroom(classroomNameToGetTeacher);
+                    if (foundTeacher != null)
+                    {
+                        Console.WriteLine($"The teacher of the classroom {classroomNameToGetTeacher} is {foundTeacher.Name} {foundTeacher.Surname}!");
+                    }
                     return true;
                 }
                 else
@@ -638,6 +518,7 @@ namespace HighSchoolApp
             }
         }
 
+        /* STUDENT OPERATIONS */
         public static bool HandleAddStudent()
         {
             Console.WriteLine("Please enter name of the student (If you want to exit, just enter \"0\"):");
@@ -830,6 +711,7 @@ namespace HighSchoolApp
             Console.WriteLine("--- End of the Student List ---");
         }
 
+        /* TEACHER OPERATIONS */
         public static bool HandleAddTeacher()
         {
             Console.WriteLine("Please enter name of the teacher (If you want to exit, just enter \"0\"):");
@@ -920,6 +802,193 @@ namespace HighSchoolApp
                     Console.WriteLine("You entered null value, please try again!");
                     return false;
                 }
+            }
+        }
+
+        public static bool HandleGetTeacherById()
+        {
+            Console.WriteLine("Please enter ID of the teacher that you want to search (If you want to exit, just enter \"0\"):");
+            int? Id = Convert.ToInt32(Console.ReadLine());
+            if (Id == 0) return true;
+            else
+            {
+                if (Id != null)
+                {
+                    Teacher? foundTeacher = teacherService.GetById(Id);
+                    if (foundTeacher != null)
+                    {
+                        Console.WriteLine($"Teacher with the ID: {Id} exists! The teacher's name surname is {foundTeacher.Name} {foundTeacher.Surname} and email is {foundTeacher.Email}.");
+                    }
+                    return true;
+                }
+                else
+                {
+                    Console.WriteLine("You entered null value, please try again!");
+                    return false;
+                }
+            }
+        }
+
+        public static bool HandleUpdateTeacher()
+        {
+            Console.WriteLine("Please enter ID of the teacher that you want to update (If you want to exit, just enter \"0\"):");
+            int? Id = Convert.ToInt32(Console.ReadLine());
+            if (Id == 0) return true;
+            else
+            {
+                if (Id != null)
+                {
+                    Console.WriteLine("Please enter a new email to update teacher (If you want to exit, just enter \"0\"):");
+                    string? newEmail = Console.ReadLine();
+                    int compareEmail = string.Compare(newEmail, "0");
+                    if (compareEmail == 0) return true;
+                    else
+                    {
+                        if (newEmail != null)
+                        {
+                            Teacher updatedTeacher = new()
+                            {
+                                Name = null,
+                                Surname = null,
+                                Email = newEmail
+                            };
+                            teacherService.Update(Id, updatedTeacher);
+                            return true;
+                        }
+                        else
+                        {
+                            Console.WriteLine("You entered null value, please try again!");
+                            return false;
+                        }
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("You entered null value, please try again!");
+                    return false;
+                }
+            }
+        }
+
+        public static bool HandleDeleteTeacher()
+        {
+            Console.WriteLine("Please enter ID of the teacher that you want to delete (If you want to exit, just enter \"0\"):");
+            int? Id = Convert.ToInt32(Console.ReadLine());
+            if (Id == 0) return true;
+            else
+            {
+                if (Id != null)
+                {
+                    teacherService.Delete(Id);
+                    return true;
+                }
+                else
+                {
+                    Console.WriteLine("You entered null value, please try again!");
+                    return false;
+                }
+            }
+        }
+
+        public static void HandleGetAllTeachers()
+        {
+            List<Teacher>? allTeachers = teacherService.GetAll();
+            if (allTeachers != null)
+            {
+                foreach (var t in allTeachers)
+                {
+                    Console.WriteLine($"Teacher ID: {t.Id}\nName Surname: {t.Name} {t.Surname}\nEmail: {t.Email}");
+                }
+            }
+            Console.WriteLine("--- End of the Teacher List ---");
+        }
+
+        /* HOMEWORK OPERATIONS */
+        public static bool HandleSendHomework()
+        {
+            Console.WriteLine("Please enter the student ID who prepared the homework (If you want to exit, just enter \"0\"):");
+            int studentId = Convert.ToInt32(Console.ReadLine());
+            if (studentId == 0) return true;
+            else
+            {
+                Console.WriteLine("Please enter the teacher ID to send homework to (If you want to exit, just enter \"0\"):");
+                int teacherId = Convert.ToInt32(Console.ReadLine());
+                if (teacherId == 0) return true;
+                else
+                {
+                    Console.WriteLine("Please enter name of the lesson (If you want to exit, just enter \"0\"):");
+                    string? lesson = Console.ReadLine();
+                    int comparisonLesson = string.Compare(lesson, "0");
+                    if (comparisonLesson == 0) return true;
+                    else
+                    {
+                        Console.WriteLine("Please enter title of the homework (If you want to exit, just enter \"0\"):");
+                        string? homeworkTitle = Console.ReadLine();
+                        int comparisonTitle = string.Compare(homeworkTitle, "0");
+                        if (comparisonTitle == 0) return true;
+                        else
+                        {
+                            Homework hw = new()
+                            {
+                                StudentId = studentId,
+                                TeacherId = teacherId,
+                                Lesson = lesson,
+                                HomeworkTitle = homeworkTitle
+                            };
+                            homeworkService.SendHomework(hw);
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+
+        public static bool HandleGetAllHomeworksSubmittedByAStudent()
+        {
+            Console.WriteLine("Please enter student ID that you want to see homeworks of (If you want to exit, just enter \"0\"):");
+            int studentHomeworkId = Convert.ToInt32(Console.ReadLine());
+            if (studentHomeworkId == 0) return true;
+            else
+            {
+                List<Homework>? homeworksStudent = homeworkService.GetAllHomeworksSubmittedByAStudent(studentHomeworkId);
+                if (homeworksStudent != null)
+                {
+                    foreach (var h in homeworksStudent)
+                    {
+                        Console.WriteLine($"Teacher ID: {h.TeacherId}\nSubmission Date: {h.SubmissionDate}\nLesson: {h.Lesson}\nHomework Title: {h.HomeworkTitle}");
+                    }
+                }
+                else Console.WriteLine($"Student with the ID: {studentHomeworkId} does not have any homeworks!");
+                return true;
+            }
+        }
+
+        public static bool HandleGetAllHomeworksSubmittedToATeacher()
+        {
+            Console.WriteLine("Please enter teacher ID to see all homeworks sent to that teacher (If you want to exit, just enter \"0\"):");
+            int teacherHomeworkId = Convert.ToInt32(Console.ReadLine());
+            if (teacherHomeworkId == 0) return true;
+            else
+            {
+                List<Homework>? homeworksTeacher = homeworkService.GetAllHomeworksSubmittedToATeacher(teacherHomeworkId);
+                if (homeworksTeacher != null)
+                {
+                    foreach (var h in homeworksTeacher)
+                    {
+                        Console.WriteLine($"Student ID: {h.StudentId}\nSubmission Date: {h.SubmissionDate}\nLesson: {h.Lesson}\nHomework Title: {h.HomeworkTitle}");
+                    }
+                }
+                else Console.WriteLine($"Students did not send any homeworks to the teacher with ID: {teacherHomeworkId}.");
+                return true;
+            }
+        }
+
+        public static void GetAllHomeworksInTheSystem()
+        {
+            List<Homework>? allHomeworks = homeworkService.GetAllHomeworksInTheSystem();
+            if (allHomeworks != null)
+            {
+                allHomeworks.ForEach(h => Console.WriteLine($"Student with the ID: {h.StudentId} sent a homework titled as {h.HomeworkTitle} to the teacher with the ID: {h.TeacherId}. The lesson was {h.Lesson} and submission date for the homework was {h.SubmissionDate}."));
             }
         }
     }
