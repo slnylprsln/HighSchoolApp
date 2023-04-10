@@ -4,9 +4,9 @@ using HighSchoolApp.IServices;
 
 namespace HighSchoolApp.Services
 {
-    public class StudentService : IStudentService
+    public class StudentService : IPersonService<Student>
     {
-        public void AddStudent(Student student)
+        public void Add(Student student)
         {
             Student? foundStudent = Program.Students.Find(s => (string.Compare(s.Name, student.Name) == 0) && (string.Compare(s.Surname, student.Surname) == 0));
             if (foundStudent == null)
@@ -14,10 +14,10 @@ namespace HighSchoolApp.Services
                 Program.Students.Add(student);
                 Console.WriteLine($"The student {student.Name} {student.Surname} is added successfully!");
             }
-            else throw new Exception($"The student {student.Name} {student.Surname} already exists!");
+            else Console.WriteLine($"The student {student.Name} {student.Surname} already exists!");
         }
 
-        public void DeleteStudent(int? id)
+        public void Delete(int? id)
         {
             Student? foundStudent = Program.Students.Find(s => s.Id == id);
             if (foundStudent != null)
@@ -32,24 +32,32 @@ namespace HighSchoolApp.Services
                 if (foundClassroom != null) foundClassroom.Students.Remove(foundStudent);
                 Console.WriteLine($"The student {foundStudent.Name} {foundStudent.Surname} is deleted successfully!");
             }
-            else throw new Exception($"Student with the ID: {id} does not exist!");
+            else Console.WriteLine($"Student with the ID: {id} does not exist!");
         }
 
-        public Student GetStudentById(int? id)
+        public Student? GetById(int? id)
         {
             Student? foundStudent = Program.Students.Find(s => s.Id == id);
             if (foundStudent != null) return foundStudent;
-            else throw new Exception($"Student with the ID: {id} does not exist!");
+            else
+            {
+                Console.WriteLine($"Student with the ID: {id} does not exist!");
+                return null;
+            }
         }
 
-        public Student GetStudentByNameSurname(string name, string surname)
+        public Student? GetByNameSurname(string name, string surname)
         {
             Student? foundStudent = Program.Students.Find(s => (string.Compare(s.Name, name) == 0) && (string.Compare(s.Surname, surname) == 0));
             if (foundStudent != null) return foundStudent;
-            else throw new Exception($"Student with the Name Surname: {name} {surname} does not exist!");
+            else
+            {
+                Console.WriteLine($"Student with the Name Surname: {name} {surname} does not exist!");
+                return null;
+            }
         }
 
-        public void UpdateStudent(int? id, Student updateStudent)
+        public void Update(int? id, Student updateStudent)
         {
             Student? foundStudent = Program.Students.Find(s => s.Id == id);
             if (foundStudent != null)
@@ -57,14 +65,22 @@ namespace HighSchoolApp.Services
                 if (string.IsNullOrEmpty(updateStudent.Email)) foundStudent.Email = foundStudent.Email;
                 else foundStudent.Email = updateStudent.Email;
 
-                Console.WriteLine($"The teacher {foundStudent.Name} {foundStudent.Surname} is updated successfully!");
+                Console.WriteLine($"The student {foundStudent.Name} {foundStudent.Surname} is updated successfully!");
             }
-            else throw new Exception($"Student with the ID: {id} does not exist!");
+            else Console.WriteLine($"Student with the ID: {id} does not exist!");
         }
 
-        public List<Student> GetAllStudents()
+        public List<Student>? GetAll()
         {
-            return Program.Students;
+            if (Program.Students.Any())
+            {
+                return Program.Students;
+            }
+            else
+            {
+                Console.WriteLine("Student list is empty!");
+                return null;
+            }
         }
     }
 }

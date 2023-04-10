@@ -13,7 +13,7 @@ namespace HighSchoolApp.Services
                 Program.Classrooms.Add(classroom);
                 Console.WriteLine($"Classroom {classroom.ClassroomName} is added successfully!");
             }
-            else throw new Exception($"Classroom {classroom.ClassroomName} already exists!");
+            else Console.WriteLine($"Classroom {classroom.ClassroomName} already exists!");
         }
 
         public void DeleteClassroom(string classroomName)
@@ -24,7 +24,7 @@ namespace HighSchoolApp.Services
                 Program.Classrooms.Remove(foundClassroom);
                 Console.WriteLine($"Classroom {classroomName} is deleted successfully!");
             }
-            else throw new Exception($"Classroom {classroomName} does not exist!");
+            else Console.WriteLine($"Classroom {classroomName} does not exist!");
         }
     }
 }

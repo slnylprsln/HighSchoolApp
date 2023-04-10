@@ -2,11 +2,11 @@
 using HighSchoolApp.Entities;
 using HighSchoolApp.IServices;
 
-namespace HighSchoolApp.Servicesstudent
+namespace HighSchoolApp.Services
 {
-    public class TeacherService : ITeacherService
+    public class TeacherService : IPersonService<Teacher>
     {
-        public void AddTeacher(Teacher teacher)
+        public void Add(Teacher teacher)
         {
             Teacher? foundTeacher = Program.Teachers.Find(t => (string.Compare(t.Name, teacher.Name) == 0) && (string.Compare(t.Surname, teacher.Surname) == 0));
             if (foundTeacher == null)
@@ -14,10 +14,10 @@ namespace HighSchoolApp.Servicesstudent
                 Program.Teachers.Add(teacher);
                 Console.WriteLine($"The teacher {teacher.Name} {teacher.Surname} is added successfully!");
             }
-            else throw new Exception($"The teacher {teacher.Name} {teacher.Surname} already exists!");
+            else Console.WriteLine($"The teacher {teacher.Name} {teacher.Surname} already exists!");
         }
 
-        public void DeleteTeacher(int? id)
+        public void Delete(int? id)
         {
             Teacher? foundTeacher = Program.Teachers.Find(t => t.Id == id);
             if (foundTeacher != null)
@@ -27,24 +27,32 @@ namespace HighSchoolApp.Servicesstudent
                 if (foundClassroom != null) foundClassroom.TeacherId = null;
                 Console.WriteLine($"The teacher {foundTeacher.Name} {foundTeacher.Surname} is deleted successfully!");
             }
-            else throw new Exception($"Teacher with the ID: {id} does not exist!");
+            else Console.WriteLine($"Teacher with the ID: {id} does not exist!");
         }
 
-        public Teacher GetTeacherById(int? id)
+        public Teacher? GetById(int? id)
         {
             Teacher? foundTeacher = Program.Teachers.Find(t => t.Id == id);
             if (foundTeacher != null) return foundTeacher;
-            else throw new Exception($"Teacher with the ID: {id} does not exist!");
+            else
+            {
+                Console.WriteLine($"Teacher with the ID: {id} does not exist!");
+                return null;
+            }
         }
 
-        public Teacher GetTeacherByNameSurname(string name, string surname)
+        public Teacher? GetByNameSurname(string name, string surname)
         {
             Teacher? foundTeacher = Program.Teachers.Find(t => (string.Compare(t.Name, name) == 0) && (string.Compare(t.Surname, surname) == 0));
             if (foundTeacher != null) return foundTeacher;
-            else throw new Exception($"Teacher with the Name Surname: {name} {surname} does not exist!");
+            else
+            {
+                Console.WriteLine($"Teacher with the Name Surname: {name} {surname} does not exist!");
+                return null;
+            }
         }
 
-        public void UpdateTeacher(int? id, Teacher updateTeacher)
+        public void Update(int? id, Teacher updateTeacher)
         {
             Teacher? foundTeacher = Program.Teachers.Find(t => t.Id == id);
             if (foundTeacher != null)
@@ -54,12 +62,20 @@ namespace HighSchoolApp.Servicesstudent
 
                 Console.WriteLine($"The teacher {foundTeacher.Name} {foundTeacher.Surname} is updated successfully!");
             }
-            else throw new Exception($"Teacher with the ID: {id} does not exist!");
+            else Console.WriteLine($"Teacher with the ID: {id} does not exist!");
         }
 
-        public List<Teacher> GetAllTeachers()
+        public List<Teacher>? GetAll()
         {
-            return Program.Teachers;
+            if (Program.Teachers.Any())
+            {
+                return Program.Teachers;
+            }
+            else
+            {
+                Console.WriteLine("Teacher list is empty!");
+                return null;
+            }
         }
     }
 }
